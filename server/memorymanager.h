@@ -22,32 +22,46 @@
 #ifndef MEMORYMANAGER_H
 #define MEMORYMANAGER_H
 #include <iostream>
-#include "doublylinkedlist.h"
+#include "blockheader.h"
 
 class MemoryManager
 {
 public:
-    MemoryManager(size_t);
+    MemoryManager(unsigned long long);
     ~MemoryManager()
     {
         delete[] memBlock_;
     }
 public:
     /**
-     * new interface for allocate memory
+     * new interface for allocate memory(Main Function)
      * @param size of allocated memory
      * @return the pointer of allocated memory
      */
-    char* Malloc(size_t);
+    char* sc_malloc(size_t);
 
     /**
-     * release the memory that has been allocated
+     * release the memory that has been allocated(Main Function)
      * @param the pointer of allocated memory that should be released
      */
-    void Free(char*);
+    void sc_free(void*);
+
+    /**
+     * destroy the memory manager, release all allocated memory
+     */
+    void destroy()
+    {
+        delete[] memBlock_;
+        delete[] freeBlocks_;
+    }
+
+    /**
+     * traverse over the list of free blocks
+     */
+    void traverse();
 private:
     char* memBlock_;  //the big block of memory that will be added into unified shared memory
-    DoublyLinkedList freeBlocks_;  //stores all free blocks available
+    blockHeader* freeBlocks_ = NULL;  //points the list of released memory blocks
 };
 
 #endif // MEMORYMANAGER_H

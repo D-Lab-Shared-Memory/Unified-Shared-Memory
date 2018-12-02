@@ -22,7 +22,7 @@
 #include "memorymanager.h"
 #include <iostream>
 
-MemoryManager::MemoryManager(unsigned long long size)
+MemoryManager::MemoryManager(unsigned long long size)         
 {
     // 1. allocate a big block of memory.
     memBlock_ = new char[size];
@@ -155,7 +155,7 @@ void MemoryManager::traverse()
         counter++;
         std::cout << "Free block No." << counter << " : " << "size[" << curr->info.size_ <<"] "
                   << "pointer range["<< static_cast<const void*>curr << ","
-                  << static_cast<const void*>((char*)curr + sizeof(blockHeader) + curr->info.size_) << "]" << "\n";
+                  << static_cast<const void*>((char*)curr + sizeof(blockHeader) + curr->info.size_) << "]" << "\n";  
     }while((curr = curr->info.next_) != freeBlocks_);
     std::cout << "---------------------------------------------------------------------" << "\n"
 }

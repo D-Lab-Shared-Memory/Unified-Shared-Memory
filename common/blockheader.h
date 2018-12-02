@@ -19,13 +19,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef BLOCKHEADER_H
+#define BLOCKHEADER_H
 #include <iostream>
-#include <memorymanager.h>
 
-using namespace std;
+typedef long Align;  // the type of long is taken as the boundary
 
-int main()
-{
-    MemoryManager* mm_ = new MemoryManager(10737418240);
-    return 0;
-}
+union defheader{
+    struct info
+    {
+        union defheader* next_;
+        unsigned long long size_; // the type of size_t restricts the size of allocated memory block should be less than 4GB
+        info()
+        {
+            next_ = NULL;
+            size_ = 0;
+        };
+    };
+    Align x;  // force memory alignment
+};
+
+typedef union defheader blockHeader;
+#endif // BLOCKHEADER_H
